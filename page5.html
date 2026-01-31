@@ -249,15 +249,42 @@
     </div>
 
     <script>
+      // ===================== AUDIO LOGIC (tối ưu cho mobile + Vercel - đồng bộ toàn site) =====================
       const music = document.getElementById("bgMusic");
       const musicBtn = document.getElementById("musicBtn");
       const musicText = document.getElementById("musicText");
       let playing = false;
-      let hasUserInteracted = false;
+      let hasUserInteracted = localStorage.getItem("audioUnlocked") === "true";
 
       music.volume = 0.35;
       music.preload = "metadata";
 
+      // Hàm thử play với fade-in
+      function attemptPlay() {
+        const playPromise = music.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              music.volume = 0;
+              let vol = 0;
+              const fadeIn = setInterval(() => {
+                vol += 0.04;
+                music.volume = Math.min(vol, 0.35);
+                if (vol >= 0.35) clearInterval(fadeIn);
+              }, 80);
+              if (musicText) musicText.textContent = "Tắt nhạc";
+            })
+            .catch((err) => {
+              console.log("Play error:", err);
+              if (err.name === "NotAllowedError" && playing) {
+                if (musicText)
+                  musicText.textContent = "Ấn bất kỳ đâu để tiếp tục nhạc 💕";
+              }
+            });
+        }
+      }
+
+      // Load state khi trang mở
       window.addEventListener("load", () => {
         const savedState = localStorage.getItem("musicState");
         if (savedState) {
@@ -268,28 +295,12 @@
 
             if (playing) {
               music.currentTime = savedTime;
-              musicBtn.textContent = "⏸️";
-              musicText.textContent = "Tắt nhạc";
+              if (musicBtn) musicBtn.textContent = "⏸️";
+              if (musicText) musicText.textContent = "Tắt nhạc";
 
-              const playPromise = music.play();
-              if (playPromise !== undefined) {
-                playPromise
-                  .then(() => {
-                    music.volume = 0;
-                    let vol = 0;
-                    const fadeIn = setInterval(() => {
-                      vol += 0.04;
-                      music.volume = Math.min(vol, 0.35);
-                      if (vol >= 0.35) clearInterval(fadeIn);
-                    }, 80);
-                    hasUserInteracted = true;
-                  })
-                  .catch((err) => {
-                    console.log("Resume error:", err);
-                    if (err.name === "NotAllowedError") {
-                      musicText.textContent = "Ấn lại để tiếp tục nhạc ";
-                    }
-                  });
+              // Nếu đã unlock trước → tự resume ngay
+              if (hasUserInteracted) {
+                attemptPlay();
               }
             }
           } catch (e) {
@@ -298,13 +309,15 @@
         }
       });
 
+      // Toggle nhạc khi ấn nút
       function toggleMusic() {
         hasUserInteracted = true;
+        localStorage.setItem("audioUnlocked", "true");
 
         if (playing) {
           music.pause();
-          musicBtn.textContent = "▶️";
-          musicText.textContent = "Phát nhạc";
+          if (musicBtn) musicBtn.textContent = "▶️";
+          if (musicText) musicText.textContent = "Phát nhạc";
           playing = false;
         } else {
           const savedState = localStorage.getItem("musicState");
@@ -312,35 +325,15 @@
             const state = JSON.parse(savedState);
             music.currentTime = parseFloat(state.currentTime) || 0;
           }
-
-          const playPromise = music.play();
-          if (playPromise !== undefined) {
-            playPromise
-              .then(() => {
-                music.volume = 0;
-                let vol = 0;
-                const fadeIn = setInterval(() => {
-                  vol += 0.04;
-                  music.volume = Math.min(vol, 0.35);
-                  if (vol >= 0.35) clearInterval(fadeIn);
-                }, 80);
-
-                musicBtn.textContent = "⏸️";
-                musicText.textContent = "Tắt nhạc";
-                playing = true;
-              })
-              .catch((err) => {
-                console.log("Play error:", err);
-                if (err.name === "NotAllowedError") {
-                  musicText.textContent = "Ấn lại để phát nhé";
-                }
-              });
-          }
+          attemptPlay();
+          if (musicBtn) musicBtn.textContent = "⏸️";
+          if (musicText) musicText.textContent = "Tắt nhạc";
+          playing = true;
         }
-
         saveMusicState();
       }
 
+      // Lưu state định kỳ (800ms để resume chính xác khi load chậm trên mobile)
       function saveMusicState() {
         localStorage.setItem(
           "musicState",
@@ -351,18 +344,23 @@
         );
       }
 
-      setInterval(saveMusicState, 1500);
-      musicBtn.addEventListener("click", toggleMusic);
+      setInterval(saveMusicState, 800);
+      if (musicBtn) musicBtn.addEventListener("click", toggleMusic);
       window.addEventListener("beforeunload", saveMusicState);
 
+      // Unlock toàn site khi ấn bất kỳ đâu (chỉ chạy 1 lần đầu tiên trên site)
       document.addEventListener(
         "click",
         () => {
           if (!hasUserInteracted) {
             hasUserInteracted = true;
+            localStorage.setItem("audioUnlocked", "true");
+
             const saved = localStorage.getItem("musicState");
-            if (saved && saved.includes('"playing":true') && !playing) {
-              toggleMusic();
+            if (saved && saved.includes('"playing":true') && music.paused) {
+              attemptPlay();
+              if (musicBtn) musicBtn.textContent = "⏸️";
+              if (musicText) musicText.textContent = "Tắt nhạc";
             }
           }
         },
