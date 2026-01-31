@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>8/3 dành cho Mai</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        background: url("bg.jpg") no-repeat center center fixed;
+        background-size: cover;
+        font-family: "Poppins", sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        position: relative;
+      }
+
+      body::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 240, 245, 0.85);
+        backdrop-filter: blur(1px);
+        z-index: 1;
+      }
+
+      .container {
+        text-align: center;
+        position: relative;
+        z-index: 10;
+        width: 100%;
+        max-width: 900px;
+        padding: 20px;
+      }
+
+      h1 {
+        font-family: "Great Vibes", cursive;
+        color: #ec4899;
+        font-size: clamp(4rem, 12vw, 8rem);
+        margin-bottom: 1rem;
+        text-shadow: 0 8px 25px rgba(236, 72, 153, 0.4);
+      }
+
+      .subtitle {
+        font-size: clamp(1.4rem, 5vw, 2.2rem);
+        color: #444;
+        margin-bottom: 2.5rem;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        font-weight: 600;
+      }
+
+      .gift {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 3rem;
+        flex-wrap: wrap;
+        width: 100%;
+        position: relative;
+        z-index: 10;
+      }
+
+      .gift-image {
+        width: 280px;
+        max-width: 45%;
+        height: auto;
+        filter: drop-shadow(0 15px 30px rgba(236, 72, 153, 0.5));
+        transition: transform 0.4s ease;
+      }
+
+      .gift-image:hover {
+        transform: scale(1.08);
+      }
+
+      #openGift {
+        padding: 0.9rem 3.2rem;
+        font-size: 1.7rem;
+        font-weight: 600;
+        color: white;
+        background: linear-gradient(135deg, #ec4899, #f06292);
+        border: none;
+        border-radius: 999px;
+        cursor: pointer;
+        box-shadow: 0 12px 35px rgba(236, 72, 153, 0.5);
+        transition: all 0.4s ease;
+        position: relative;
+        z-index: 10;
+      }
+
+      #openGift:hover {
+        transform: translateY(-6px) scale(1.08);
+        box-shadow: 0 20px 50px rgba(236, 72, 153, 0.6);
+      }
+
+      #openGift:active {
+        transform: scale(0.95);
+      }
+
+      #confetti {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 999;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+      }
+
+      .confetti-piece {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: #ec4899;
+        border-radius: 3px;
+        opacity: 0;
+        animation: fall 3s linear forwards;
+      }
+
+      @keyframes fall {
+        0% {
+          transform: translateY(-100vh) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(120vh) rotate(720deg);
+          opacity: 0;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .gift {
+          flex-direction: column;
+          gap: 2rem;
+        }
+
+        .gift-image {
+          width: 220px;
+          max-width: 80%;
+        }
+
+        #openGift {
+          padding: 0.8rem 2.8rem;
+          font-size: 1.6rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Chúc mừng 8/3</h1>
+      <div class="subtitle">Ấn nút để mở quà nhé Mai</div>
+
+      <div class="gift">
+        <img class="gift-image" src="giftbox.png" alt="Hộp quà 8/3" />
+
+        <button id="openGift">Mở quà</button>
+      </div>
+    </div>
+
+    <div id="confetti"></div>
+
+    <script>
+      function createConfetti() {
+        const confettiContainer = document.getElementById("confetti");
+        confettiContainer.style.opacity = "1";
+
+        const colors = [
+          "#ec4899",
+          "#f06292",
+          "#ff80ab",
+          "#ff4081",
+          "#c2185b",
+          "#ffffff",
+          "#ffd54f",
+        ];
+
+        for (let i = 0; i < 80; i++) {
+          const piece = document.createElement("div");
+          piece.className = "confetti-piece";
+          piece.style.left = Math.random() * 40 + "vw";
+          piece.style.background =
+            colors[Math.floor(Math.random() * colors.length)];
+          piece.style.animationDelay = Math.random() * 1.5 + "s";
+          piece.style.animationDuration = Math.random() * 2 + 3 + "s";
+          confettiContainer.appendChild(piece);
+        }
+
+        for (let i = 0; i < 80; i++) {
+          const piece = document.createElement("div");
+          piece.className = "confetti-piece";
+          piece.style.right = Math.random() * 40 + "vw";
+          piece.style.left = "auto";
+          piece.style.background =
+            colors[Math.floor(Math.random() * colors.length)];
+          piece.style.animationDelay = Math.random() * 1.5 + "s";
+          piece.style.animationDuration = Math.random() * 2 + 3 + "s";
+          confettiContainer.appendChild(piece);
+        }
+
+        setTimeout(() => {
+          confettiContainer.innerHTML = "";
+          confettiContainer.style.opacity = "0";
+        }, 5000);
+      }
+
+      const openBtn = document.getElementById("openGift");
+      openBtn.addEventListener("click", () => {
+        if (openBtn.disabled) return;
+
+        openBtn.disabled = true;
+        openBtn.textContent = "Chờ chút nhé!";
+        openBtn.style.transform = "scale(0.9)";
+        openBtn.style.opacity = "0.7";
+
+        createConfetti();
+
+        setTimeout(() => {
+          window.location.href = "page1.html";
+        }, 2500);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mở đầu</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Great+Vibes&family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #ffe4ec, #f3e8ff);
+        font-family: "Poppins", sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .card {
+        background: white;
+        max-width: 90%;
+        margin: auto;
+        min-height: 90vh;
+        padding: 20px;
+        display: flex;
+        gap: 20px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .logo {
+        margin: 0 auto -30px auto;
+        width: 480px;
+        height: 480px;
+      }
+
+      .logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      .image {
+        flex: 1;
+      }
+
+      .image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 16px;
+      }
+
+      .content {
+        flex: 1.2;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        margin-top: -60px;
+        position: relative;
+      }
+
+      h1 {
+        font-family: "Great Vibes", cursive;
+        color: #ec4899;
+        margin: -40px 0 12px 0;
+        font-size: 3.2rem;
+        line-height: 1.1;
+      }
+
+      .subtitle {
+        color: #555;
+        margin-bottom: 16px;
+      }
+
+      .message {
+        background: #fff1f6;
+        padding: 20px;
+        border-radius: 16px;
+        margin: 20px 0;
+        font-family: "Dancing Script", cursive;
+        font-size: 1.7rem;
+        line-height: 1.5;
+      }
+
+      .music-control {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin: -100px auto 70px auto;
+      }
+
+      .music-btn {
+        background: #f9a8d4;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        font-size: 1.8rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
+        transition: all 0.3s ease;
+      }
+
+      .music-btn:hover {
+        transform: scale(1.1);
+        background: #ec4899;
+        box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6);
+      }
+
+      .music-text {
+        color: #ec4899;
+        font-size: 1rem;
+        font-weight: 500;
+      }
+
+      .arrow {
+        margin: 30px auto 0 auto;
+        padding: 10px 24px;
+        font-size: 1rem;
+        text-decoration: none;
+        color: #ec4899;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        border: 2px solid #ec4899;
+        border-radius: 999px;
+        font-weight: 500;
+
+        transition: all 0.3s ease;
+      }
+
+      .arrow:hover {
+        background: #ec4899;
+        color: white;
+        transform: translateX(4px);
+      }
+
+      @media (max-width: 640px) {
+        .card {
+          flex-direction: column;
+          padding: 16px;
+        }
+
+        .logo {
+          margin: 0 auto -15px auto;
+          width: 220px;
+          height: 220px;
+        }
+
+        .content {
+          margin-top: -40px;
+        }
+
+        .image img {
+          height: 50vh;
+          border-radius: 12px;
+        }
+
+        h1 {
+          font-size: 2.8rem;
+        }
+
+        .message {
+          font-size: 1.4rem;
+          padding: 16px;
+        }
+
+        .music-control {
+          margin: -30px auto 60px auto;
+          gap: 10px;
+        }
+
+        .music-btn {
+          width: 45px;
+          height: 45px;
+          font-size: 1.6rem;
+        }
+
+        .music-text {
+          font-size: 0.95rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <audio id="bgMusic" loop preload="auto">
+      <source src="nhac.mp3" type="audio/mpeg" />
+    </audio>
+
+    <div class="card">
+      <div class="image">
+        <img src="chinh.jpg" alt="Hoa 8/3" />
+      </div>
+
+      <div class="content">
+        <div class="logo">
+          <img src="logo.png" alt="Logo" />
+        </div>
+
+        <div class="music-control">
+          <button class="music-btn">▶️</button>
+
+          <span class="music-text">Phát nhạc</span>
+        </div>
+
+        <h1>Chúc mừng ngày Quốc tế Phụ nữ</h1>
+        <div class="subtitle">Gửi đến người con gái đặc biệt 💖</div>
+
+        <div class="message">
+          Cảm ơn bạn vì đã xuất hiện trong ký ức thanh xuân của tôi,<br />
+          mang đến sự dịu dàng, sự bướng bỉnh và cả sự bình yên<br />
+          theo cách rất riêng mà khác biệt so với những người mà tôi từng gặp.
+        </div>
+
+        <a href="page2.html" class="arrow">➜ Đọc tiếp</a>
+      </div>
+    </div>
+
+    <script>
+      const music = document.getElementById("bgMusic");
+      const musicBtn = document.querySelector(".music-btn");
+      const musicText = document.querySelector(".music-text");
+      let playing = false;
+      let hasUserInteracted = false;
+
+      music.volume = 0.35;
+      music.preload = "metadata";
+
+      window.addEventListener("load", () => {
+        const savedState = localStorage.getItem("musicState");
+        if (savedState) {
+          try {
+            const state = JSON.parse(savedState);
+            playing = state.playing;
+            const savedTime = parseFloat(state.currentTime) || 0;
+
+            if (playing) {
+              music.currentTime = savedTime;
+              musicBtn.textContent = "⏸️";
+              musicText.textContent = "Tắt nhạc";
+
+              const playPromise = music.play();
+              if (playPromise !== undefined) {
+                playPromise
+                  .then(() => {
+                    music.volume = 0;
+                    let vol = 0;
+                    const fadeIn = setInterval(() => {
+                      vol += 0.04;
+                      music.volume = Math.min(vol, 0.35);
+                      if (vol >= 0.35) clearInterval(fadeIn);
+                    }, 80);
+
+                    hasUserInteracted = true;
+                  })
+                  .catch((err) => {
+                    console.log("Resume error:", err);
+                    if (err.name === "NotAllowedError") {
+                      musicText.textContent = "Ấn lại để tiếp tục nhạc";
+                    }
+                  });
+              }
+            }
+          } catch (e) {
+            console.log("Lỗi load state:", e);
+          }
+        }
+      });
+
+      function toggleMusic() {
+        hasUserInteracted = true;
+
+        if (playing) {
+          music.pause();
+          musicBtn.textContent = "▶️";
+          musicText.textContent = "Phát nhạc";
+          playing = false;
+        } else {
+          const savedState = localStorage.getItem("musicState");
+          if (savedState) {
+            const state = JSON.parse(savedState);
+            music.currentTime = parseFloat(state.currentTime) || 0;
+          }
+
+          const playPromise = music.play();
+          if (playPromise !== undefined) {
+            playPromise
+              .then(() => {
+                music.volume = 0;
+                let vol = 0;
+                const fadeIn = setInterval(() => {
+                  vol += 0.04;
+                  music.volume = Math.min(vol, 0.35);
+                  if (vol >= 0.35) clearInterval(fadeIn);
+                }, 80);
+
+                musicBtn.textContent = "⏸️";
+                musicText.textContent = "Tắt nhạc";
+                playing = true;
+              })
+              .catch((err) => {
+                console.log("Play error:", err);
+                if (err.name === "NotAllowedError") {
+                  musicText.textContent = "Ấn lại để phát nhé";
+                }
+              });
+          }
+        }
+
+        saveMusicState();
+      }
+
+      function saveMusicState() {
+        localStorage.setItem(
+          "musicState",
+          JSON.stringify({
+            playing: playing,
+            currentTime: music.currentTime || 0,
+          }),
+        );
+      }
+
+      setInterval(saveMusicState, 1000);
+      musicBtn.addEventListener("click", toggleMusic);
+      window.addEventListener("beforeunload", saveMusicState);
+
+      document.addEventListener(
+        "click",
+        () => {
+          if (!hasUserInteracted) {
+            hasUserInteracted = true;
+
+            const saved = localStorage.getItem("musicState");
+            if (saved && saved.includes('"playing":true') && !playing) {
+              toggleMusic();
+            }
+          }
+        },
+        { once: true },
+      );
+    </script>
+  </body>
+</html>

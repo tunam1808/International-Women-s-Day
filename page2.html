@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Dòng chảy thời gian</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Great+Vibes&family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #ffe4ec, #f3e8ff);
+        font-family: "Poppins", sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        touch-action: manipulation;
+      }
+
+      .card {
+        background: white;
+        max-width: 90%;
+        width: 90%;
+        min-height: 90vh;
+        margin: 20px auto;
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(236, 72, 153, 0.15);
+        gap: 40px;
+      }
+
+      h1 {
+        font-family: "Great Vibes", cursive;
+        color: #ec4899;
+        font-size: 3.8rem;
+        margin: 0;
+        text-align: center;
+      }
+
+      .music-control {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin: -30px 0 -20px 0;
+      }
+
+      .music-btn {
+        background: #f9a8d4;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 52px;
+        height: 52px;
+        font-size: 1.9rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
+        transition: all 0.3s ease;
+      }
+
+      .music-btn:hover {
+        transform: scale(1.1);
+        background: #ec4899;
+        box-shadow: 0 8px 25px rgba(236, 72, 153, 0.5);
+      }
+
+      .music-text {
+        color: #ec4899;
+        font-size: 1.05rem;
+        font-weight: 500;
+      }
+
+      .timeline-bar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 16px;
+        width: 100%;
+        max-width: 800px;
+      }
+
+      .timeline-btn {
+        background: #fff0f7;
+        color: #ec4899;
+        border: 2px solid #ec4899;
+        border-radius: 50px;
+        padding: 14px 28px;
+        font-size: 1.4rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-width: 110px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(236, 72, 153, 0.2);
+      }
+
+      .timeline-btn:hover {
+        background: #ec4899;
+        color: white;
+        transform: translateY(-4px);
+        box-shadow: 0 10px 25px rgba(236, 72, 153, 0.4);
+      }
+
+      .timeline-btn.active {
+        background: #ec4899;
+        color: white;
+        box-shadow: 0 8px 20px rgba(236, 72, 153, 0.5);
+      }
+
+      .timeline-btn.dimmed {
+        opacity: 0.45;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .photos-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 24px;
+        width: 100%;
+        max-width: 1200px;
+      }
+
+      .photo-wrapper {
+        width: 100%;
+        max-width: 280px;
+        aspect-ratio: 3 / 4;
+        position: relative;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .photo-front,
+      .photo-back {
+        position: absolute;
+        inset: 0;
+        border-radius: 16px;
+        overflow: hidden;
+        transition: opacity 0.5s ease;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .photo-front {
+        opacity: 1;
+      }
+      .photo-back {
+        opacity: 0;
+        background: white;
+      }
+
+      .photo-wrapper.show-back .photo-front {
+        opacity: 0;
+      }
+      .photo-wrapper.show-back .photo-back {
+        opacity: 1;
+      }
+
+      .photo-front img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .back-inner {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .back-inner p {
+        margin: 0;
+        font-family: "Dancing Script", cursive;
+        font-size: 1.5rem;
+        line-height: 1.5;
+        text-align: center;
+        color: #ec4899;
+      }
+
+      .text-only {
+        width: 100%;
+        max-width: 600px;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        padding: 30px;
+        font-family: "Dancing Script", cursive;
+        font-size: 1.6rem;
+        line-height: 1.6;
+        text-align: center;
+        color: #ec4899;
+      }
+
+      .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 300px;
+        margin-top: 40px;
+        gap: 20px;
+      }
+
+      .nav-btn {
+        flex: 1;
+        font-size: 1rem;
+        padding: 14px 28px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
+        border-radius: 50px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .nav-btn.left {
+        background: #fff0f7;
+        color: #ec4899;
+        border: 2px solid #ec4899;
+      }
+      .nav-btn.left:hover {
+        background: #ec4899;
+        color: white;
+      }
+      .nav-btn.right {
+        background: #fff0f7;
+        color: #ec4899;
+        border: 2px solid #ec4899;
+      }
+      .nav-btn.right:hover {
+        background: #ec4899;
+        color: white;
+      }
+
+      .nav-btn.hidden {
+        visibility: hidden;
+        pointer-events: none;
+      }
+      .title {
+        text-align: center;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .card {
+          padding: 30px 15px;
+          gap: 30px;
+        }
+        h1 {
+          font-size: 3.2rem;
+        }
+        .music-control {
+          margin: -10px 0 -5px 0;
+          gap: 10px;
+        }
+        .music-btn {
+          width: 48px;
+          height: 48px;
+          font-size: 1.7rem;
+        }
+        .music-text {
+          font-size: 1rem;
+        }
+        .timeline-btn {
+          padding: 12px 24px;
+          font-size: 1.3rem;
+          min-width: 100px;
+        }
+        .photo-wrapper {
+          max-width: 90%;
+        }
+        .text-only {
+          font-size: 1.5rem;
+          padding: 25px;
+        }
+        .nav-buttons {
+          flex-direction: column;
+          align-items: center;
+        }
+        .nav-btn {
+          width: 100%;
+          max-width: 220px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <audio id="bgMusic" loop preload="auto">
+      <source src="nhac.mp3" type="audio/mpeg" />
+    </audio>
+
+    <div class="card">
+      <h1>🌸 Dòng chảy thời gian</h1>
+
+      <div class="music-control">
+        <button class="music-btn" id="musicBtn">▶️</button>
+        <span class="music-text" id="musicText">Phát nhạc</span>
+      </div>
+
+      <div class="timeline-bar">
+        <button class="timeline-btn active" data-year="2022">2022</button>
+        <button class="timeline-btn" data-year="2023">2023</button>
+        <button class="timeline-btn" data-year="2024">2024</button>
+        <button class="timeline-btn" data-year="2025">2025</button>
+        <button class="timeline-btn" data-year="2026">2026</button>
+      </div>
+      <div class="title">
+        Hover vào ảnh nếu dùng laptop hoặc ấn giữ ảnh trên điện thoại để xem nội
+        dung ảnh
+      </div>
+
+      <div class="photos-container" id="photos"></div>
+
+      <div class="nav-buttons" id="navButtons">
+        <button
+          class="nav-btn left"
+          onclick="window.location.href = 'page1.html'"
+        >
+          ⬅ Quay lại
+        </button>
+        <button
+          class="nav-btn right"
+          onclick="window.location.href = 'page3.html'"
+        >
+          Đọc tiếp ➜
+        </button>
+      </div>
+    </div>
+
+    <script>
+      const buttons = document.querySelectorAll(".timeline-btn");
+      const photosContainer = document.getElementById("photos");
+      const navButtons = document.getElementById("navButtons");
+      const leftBtn = navButtons.querySelector(".left");
+      const rightBtn = navButtons.querySelector(".right");
+
+      const yearData = {
+        2022: [
+          "Chưa có gì đặc biệt mấy nhưng mà là lần đầu nói chuyện với nhau, tôi chỉ để ý là bạn khá cởi mở và có chút hướng ngoại. Ấn tượng ban đầu chắc là các bạn lôi tụi tôi ra sơn móng tay làm tôi cậy cả ngày hôm đấy nhá (lại còn màu hồng nữa, biện minh thì vẫn có ảnh đây). Xong chả biết là cái duyên sao ý, chung hết nhóm này đến nhóm khác (nhóm tiếng anh, nhóm kỹ năng giao tiếp, nhóm kỹ năng tìm việc,...)",
+        ],
+        2023: [
+          {
+            front: "20234.jpg",
+            back: "Quả ảnh troll đầu tiên chụp đc với cái nọng to tướng. Ban đầu thấy buồn cười, nhưng sau lại thấy thích. Chắc do yêu nên thế, lúc xấu nhất vẫn yêu thì hiểu đấy...",
+          },
+          {
+            front: "20233.jpg",
+            back: "Quả ảnh mà tôi thấy cute nhất từ trước tới giờ, mấy cái sau này vẫn không sánh được về độ cute, cái này nói thật lòng",
+          },
+          {
+            front: "20231.jpg",
+            back: "Tôi rung động vì bạn cũng chính do ảnh này đấy biết không",
+          },
+          {
+            front: "20232.jpg",
+            back: "Chụp ảnh cho và bị chê xấu là đây, giờ thì vẫn xấu nhưng chắc chắn hơn xưa rất nhiều rồi",
+          },
+        ],
+        2024: [
+          {
+            front: "20241.jpg",
+            back: "Thế éo nào lúc đấy lại có ý định tặng son cho bạn ạ, nên âm thầm xem thử nhãn hiệu",
+          },
+          {
+            front: "20242.jpg",
+            back: "Đoạn này tìm hiểu kỹ lắm rồi nhưng cuối cùng lại thôi không mua nữa vì sợ mua phải hàng đểu",
+          },
+          {
+            front: "20243.jpg",
+            back: "Không cần nói gì thêm về ảnh này, tôi học sáo chỉ có 2 mục đích chính: 1 là chơi những lúc buồn, 2 là dành tặng cho người mình yêu thương",
+          },
+          {
+            front: "20244.jpg",
+            back: "Giao diện trưởng thành nói chung là thích",
+          },
+          {
+            front: "20245.jpg",
+            back: "Thề trông thướt tha vch, tôi chỉ biết wowww thôi",
+          },
+        ],
+        2025: [
+          {
+            front: "20251.jpg",
+            back: "Trông sang chảnh đấy, giống kiểu nữ tổng tài trong phim",
+          },
+          {
+            front: "20252.jpg",
+            back: "Tôi đã bảo đã yêu thì yêu cả lúc mặt mộc mà",
+          },
+          {
+            front: "20253.jpg",
+            back: "Đây chính là bức ảnh buồn nhất trong cái page này, sau đợt tháng 4/2025 này tôi không biết nên coi bạn là gì nữa: ny(không), bạn thân(không), bạn bè(lại càng không)",
+          },
+          {
+            front: "20254.jpg",
+            back: "Cảnh cô gái với hồ tây điện ảnh đấy nhưng tiếc là tôi không cười nữa rồi",
+          },
+          {
+            front: "20255.jpg",
+            back: "Đây cũng vậy, tôi không cười nữa rồi, mặc dù tôi rất muốn nhìn dáng vẻ vô tư của bạn",
+          },
+          {
+            front: "20256.jpg",
+            back: "Bức này toát ra vẻ mạnh mẽ với cuộc sống này, tôi biết là vòng tay tôi không đủ rộng, đủ an toàn để kéo cô ấy vào lòng mình rồi",
+          },
+          {
+            front: "20257.jpg",
+            back: "Cuộc sống ở quê vẫn thật bình dị, vui nhiều hơn là buồn nhưng vẫn phải quay về Hà Nội kiếm sống",
+          },
+        ],
+        2026: [
+          {
+            front: "20261.jpg",
+            back: "Tốt nghiệp huy hoàng, không có ảnh chung 2 đứa nên đăng tạm ảnh nhóm vậy",
+          },
+        ],
+      };
+
+      function showPhotos(year) {
+        const items = yearData[year] || [];
+        photosContainer.innerHTML = "";
+
+        if (year === "2022") {
+          const textBlock = document.createElement("div");
+          textBlock.className = "text-only";
+          textBlock.innerHTML = `<p>${items[0]}</p>`;
+          photosContainer.appendChild(textBlock);
+        } else {
+          items.forEach((item) => {
+            const wrapper = document.createElement("div");
+            wrapper.className = "photo-wrapper";
+            wrapper.innerHTML = `
+              <div class="photo-front"><img src="${item.front}" alt="Ảnh ${year}" draggable="false"></div>
+              <div class="photo-back"><div class="back-inner"><p>${item.back}</p></div></div>
+            `;
+
+            if (window.matchMedia("(hover: hover)").matches) {
+              wrapper.addEventListener("mouseenter", () =>
+                wrapper.classList.add("show-back"),
+              );
+              wrapper.addEventListener("mouseleave", () =>
+                wrapper.classList.remove("show-back"),
+              );
+            }
+
+            wrapper.addEventListener("click", (e) => {
+              e.preventDefault();
+              wrapper.classList.toggle("show-back");
+            });
+            wrapper.addEventListener(
+              "touchstart",
+              (e) => {
+                e.stopPropagation();
+                wrapper.classList.toggle("show-back");
+              },
+              { passive: true },
+            );
+
+            photosContainer.appendChild(wrapper);
+          });
+        }
+
+        if (year === "2022") {
+          leftBtn.classList.remove("hidden");
+          rightBtn.classList.add("hidden");
+        } else if (year === "2026") {
+          leftBtn.classList.add("hidden");
+          rightBtn.classList.remove("hidden");
+        } else {
+          leftBtn.classList.add("hidden");
+          rightBtn.classList.add("hidden");
+        }
+      }
+
+      function updateButtons(selectedBtn) {
+        buttons.forEach((btn) => {
+          btn.classList.toggle("active", btn === selectedBtn);
+          btn.classList.toggle("dimmed", btn !== selectedBtn);
+        });
+      }
+
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const year = btn.dataset.year;
+          updateButtons(btn);
+          showPhotos(year);
+        });
+      });
+
+      const defaultBtn = document.querySelector(
+        '.timeline-btn[data-year="2022"]',
+      );
+      updateButtons(defaultBtn);
+      showPhotos("2022");
+
+      <!-- ===================== AUDIO LOGIC (persist across pages - updated) ===================== -->
+      const music = document.getElementById("bgMusic");
+      const musicBtn = document.querySelector("#musicBtn");
+      const musicText = document.querySelector("#musicText");
+      let playing = false;
+      let hasUserInteracted = false;
+
+      music.volume = 0.35;
+      music.preload = "metadata";
+
+      window.addEventListener("load", () => {
+        const savedState = localStorage.getItem("musicState");
+        if (savedState) {
+          try {
+            const state = JSON.parse(savedState);
+            playing = state.playing;
+            const savedTime = parseFloat(state.currentTime) || 0;
+
+            if (playing) {
+              music.currentTime = savedTime;
+              musicBtn.textContent = "⏸️";
+              musicText.textContent = "Tắt nhạc";
+
+              const playPromise = music.play();
+              if (playPromise !== undefined) {
+                playPromise
+                  .then(() => {
+                    music.volume = 0;
+                    let vol = 0;
+                    const fadeIn = setInterval(() => {
+                      vol += 0.04;
+                      music.volume = Math.min(vol, 0.35);
+                      if (vol >= 0.35) clearInterval(fadeIn);
+                    }, 80);
+
+                    hasUserInteracted = true;
+                  })
+                  .catch((err) => {
+                    console.log("Resume error:", err);
+                    if (err.name === "NotAllowedError") {
+                      musicText.textContent = "Ấn lại để tiếp tục nhạc";
+                    }
+                  });
+              }
+            }
+          } catch (e) {
+            console.log("Lỗi load state:", e);
+          }
+        }
+      });
+
+      function toggleMusic() {
+        hasUserInteracted = true;
+
+        if (playing) {
+          music.pause();
+          musicBtn.textContent = "▶️";
+          musicText.textContent = "Phát nhạc";
+          playing = false;
+        } else {
+          const savedState = localStorage.getItem("musicState");
+          if (savedState) {
+            const state = JSON.parse(savedState);
+            music.currentTime = parseFloat(state.currentTime) || 0;
+          }
+
+          const playPromise = music.play();
+          if (playPromise !== undefined) {
+            playPromise
+              .then(() => {
+                music.volume = 0;
+                let vol = 0;
+                const fadeIn = setInterval(() => {
+                  vol += 0.04;
+                  music.volume = Math.min(vol, 0.35);
+                  if (vol >= 0.35) clearInterval(fadeIn);
+                }, 80);
+
+                musicBtn.textContent = "⏸️";
+                musicText.textContent = "Tắt nhạc";
+                playing = true;
+              })
+              .catch((err) => {
+                console.log("Play error:", err);
+                if (err.name === "NotAllowedError") {
+                  musicText.textContent = "Ấn lại để phát nhé";
+                }
+              });
+          }
+        }
+
+        saveMusicState();
+      }
+
+      function saveMusicState() {
+        localStorage.setItem(
+          "musicState",
+          JSON.stringify({
+            playing: playing,
+            currentTime: music.currentTime || 0,
+          }),
+        );
+      }
+
+      setInterval(saveMusicState, 1500);
+      musicBtn.addEventListener("click", toggleMusic);
+      window.addEventListener("beforeunload", saveMusicState);
+
+      document.addEventListener(
+        "click",
+        () => {
+          if (!hasUserInteracted) {
+            hasUserInteracted = true;
+
+            if (
+              localStorage.getItem("musicState")?.includes('"playing":true') &&
+              !playing
+            ) {
+              toggleMusic();
+            }
+          }
+        },
+        { once: true },
+      );
+    </script>
+  </body>
+</html>
